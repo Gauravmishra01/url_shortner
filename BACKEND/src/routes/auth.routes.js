@@ -6,8 +6,11 @@ import {
   get_current_user,
 } from "../controller/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
+import { ensureDatabaseReady } from "../middleware/ensureDatabaseReady.js";
 
 const router = express.Router();
+
+router.use(ensureDatabaseReady);
 
 router.post("/register", register_user);
 router.post("/login", login_user);

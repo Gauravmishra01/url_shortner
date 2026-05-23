@@ -11,7 +11,6 @@ import {
   SectionHeading,
   SkeletonTable,
 } from "./ui-kit.jsx";
-import QRPreview from "./QRPreview";
 import { useAppUI } from "../context/AppUIContext.jsx";
 
 const UserUrl = () => {
@@ -101,7 +100,7 @@ const UserUrl = () => {
 
   return (
     <Card className="overflow-hidden p-0">
-      <div className="flex flex-col gap-4 border-b border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 border-b border-white/10 p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <SectionHeading
             eyebrow="Your library"
@@ -117,13 +116,13 @@ const UserUrl = () => {
         </div>
       </div>
 
-      <div className="grid gap-3 border-b border-white/10 p-5 md:grid-cols-[1fr_auto] md:items-center">
+      <div className="grid gap-3 border-b border-white/10 p-4 sm:p-5 lg:grid-cols-[1fr_auto] lg:items-center">
         <Input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search original or short URLs"
         />
-        <div className="flex flex-wrap gap-2">
+        <div className="mobile-chip-row">
           {[
             ["all", "All"],
             ["bookmarked", "Bookmarks"],
@@ -135,6 +134,7 @@ const UserUrl = () => {
               variant={activeFilter === value ? "primary" : "secondary"}
               size="sm"
               onClick={() => setActiveFilter(value)}
+              className="shrink-0"
             >
               {label}
             </Button>
@@ -142,102 +142,66 @@ const UserUrl = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-white/10">
-          <thead className="bg-white/5 text-left text-xs font-semibold uppercase tracking-[0.24em] text-[color:var(--muted)]">
-            <tr>
-              <th className="px-5 py-4">Original URL</th>
-              <th className="px-5 py-4">Short URL</th>
-              <th className="px-5 py-4">Clicks</th>
-              <th className="px-5 py-4">QR</th>
-              <th className="px-5 py-4">Status</th>
-              <th className="px-5 py-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/10">
-            {enrichedUrls.map((url) => {
-              const shortLink = url.shortUrl || url.short_url;
-              const qrLink =
-                url.qrUrl ||
-                (() => {
-                  try {
-                    const parsed = new URL(shortLink);
-                    const slug = parsed.pathname.replace(/^\//, "");
-                    return `${parsed.origin}/qr/${slug}`;
-                  } catch (error) {
-                    return shortLink;
-                  }
-                })();
-              const bookmarkKey = url.short_url;
-              const isBookmarked = Boolean(bookmarks[bookmarkKey]);
+      <div className="space-y-3 p-4 sm:p-5">
+        {enrichedUrls.map((url) => {
+          const shortLink = url.shortUrl || url.short_url;
+          const bookmarkKey = url.short_url;
+          const isBookmarked = Boolean(bookmarks[bookmarkKey]);
 
-              return (
-                <tr key={url._id} className="transition hover:bg-white/5">
-                  <td className="max-w-[18rem] px-5 py-4 align-top">
-                    <p className="truncate text-sm font-medium text-[color:var(--text)]">
-                      {url.full_url}
-                    </p>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <a
-                      href={shortLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm font-medium text-[color:var(--accent-2)] hover:underline"
-                    >
-                      {shortLink}
-                    </a>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <Badge tone={url.clicks > 5 ? "success" : "accent"}>
-                      {url.clicks} {url.clicks === 1 ? "click" : "clicks"}
-                    </Badge>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <div className="flex items-center gap-2">
-                      <Badge tone={url.qrScans > 0 ? "accent" : "neutral"}>
-                        {url.qrScans ?? 0}
-                      </Badge>
-                      <div>
-                        <QRPreview value={qrLink} size={100} />
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <Badge tone={isBookmarked ? "warning" : "neutral"}>
-                      {isBookmarked ? "Bookmarked" : "Saved"}
-                    </Badge>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <div className="flex flex-wrap gap-2">
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => handleCopy(shortLink, url._id)}
-                      >
-                        {copiedId === url._id ? "Copied" : "Copy"}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant={isBookmarked ? "primary" : "ghost"}
-                        size="sm"
-                        onClick={() => {
-                          toggleBookmark(bookmarkKey, {
-                            label: url.full_url,
-                            shortUrl: shortLink,
-                          });
-                        }}
-                      >
-                        {isBookmarked ? "Unbookmark" : "Save"}
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+          return (
+            <div key={url._id} className="soft-panel space-y-4 p-4 sm:p-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0 space-y-1">
+                  <p className="truncate text-sm font-semibold text-[color:var(--text)]">
+                    {url.full_url}
+                  </p>
+                  <a
+                    href={shortLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block break-all text-sm font-medium text-[color:var(--accent-2)]"
+                  >
+                    {shortLink}
+                  </a>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Badge tone={url.clicks > 5 ? "success" : "accent"}>
+                    {url.clicks} {url.clicks === 1 ? "click" : "clicks"}
+                  </Badge>
+                  <Badge tone={isBookmarked ? "warning" : "neutral"}>
+                    {isBookmarked ? "Bookmarked" : "Saved"}
+                  </Badge>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => handleCopy(shortLink, url._id)}
+                  className="w-full sm:w-auto"
+                >
+                  {copiedId === url._id ? "Copied" : "Copy"}
+                </Button>
+                <Button
+                  type="button"
+                  variant={isBookmarked ? "primary" : "ghost"}
+                  size="sm"
+                  onClick={() => {
+                    toggleBookmark(bookmarkKey, {
+                      label: url.full_url,
+                      shortUrl: shortLink,
+                    });
+                  }}
+                  className="w-full sm:w-auto"
+                >
+                  {isBookmarked ? "Unbookmark" : "Save"}
+                </Button>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {enrichedUrls.length === 0 ? (

@@ -38,7 +38,7 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-30 border-b border-white/10 bg-[color:var(--bg-elevated)] backdrop-blur-2xl">
-      <div className="page-shell flex items-center justify-between gap-4 py-4">
+      <div className="page-shell flex items-center justify-between gap-3 py-3 sm:py-4">
         <Link to="/" className="group flex items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-violet-500 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition duration-200 group-hover:scale-105">
             U
@@ -61,10 +61,28 @@ const Navbar = () => {
             Home
           </Link>
           <Link
+            to="/about"
+            className="premium-button-subtle rounded-2xl px-4 py-2 text-sm font-semibold text-[color:var(--muted)] hover:text-[color:var(--text)]"
+          >
+            About us
+          </Link>
+          <Link
             to="/dashboard"
             className="premium-button-subtle rounded-2xl px-4 py-2 text-sm font-semibold text-[color:var(--muted)] hover:text-[color:var(--text)]"
           >
             Dashboard
+          </Link>
+          <Link
+            to="/links"
+            className="premium-button-subtle rounded-2xl px-4 py-2 text-sm font-semibold text-[color:var(--muted)] hover:text-[color:var(--text)]"
+          >
+            Links
+          </Link>
+          <Link
+            to="/activity"
+            className="premium-button-subtle rounded-2xl px-4 py-2 text-sm font-semibold text-[color:var(--muted)] hover:text-[color:var(--text)]"
+          >
+            Activity
           </Link>
           {!isAuthenticated ? (
             <Link
@@ -189,6 +207,58 @@ const Navbar = () => {
         </div>
       </div>
 
+      <div className="page-shell pb-3 md:hidden">
+        <div className="mobile-chip-row soft-panel px-2 py-2">
+          <Link
+            to="/"
+            className="rounded-full px-4 py-2 text-sm font-semibold text-[color:var(--text)]"
+          >
+            Home
+          </Link>
+          <Link
+            to="/about"
+            className="rounded-full px-4 py-2 text-sm font-semibold text-[color:var(--text)]"
+          >
+            About us
+          </Link>
+          <Link
+            to="/dashboard"
+            className="rounded-full px-4 py-2 text-sm font-semibold text-[color:var(--text)]"
+          >
+            Dashboard
+          </Link>
+          <Link
+            to="/links"
+            className="rounded-full px-4 py-2 text-sm font-semibold text-[color:var(--text)]"
+          >
+            Links
+          </Link>
+          <Link
+            to="/activity"
+            className="rounded-full px-4 py-2 text-sm font-semibold text-[color:var(--text)]"
+          >
+            Activity
+          </Link>
+          {!isAuthenticated ? (
+            <Link
+              to="/auth"
+              className="rounded-full bg-[color:var(--accent-2)] px-4 py-2 text-sm font-semibold text-white"
+            >
+              Sign in
+            </Link>
+          ) : null}
+          {isAuthenticated ? (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="rounded-full px-4 py-2 text-sm font-semibold text-[color:var(--muted)]"
+            >
+              Logout
+            </button>
+          ) : null}
+        </div>
+      </div>
+
       {menuOpen ? (
         <div className="page-shell pb-4 md:hidden">
           <div className="premium-card space-y-2 p-3">
@@ -199,10 +269,28 @@ const Navbar = () => {
               Home
             </Link>
             <Link
+              to="/about"
+              className="block rounded-2xl px-4 py-3 text-sm font-semibold text-[color:var(--text)] hover:bg-white/5"
+            >
+              About us
+            </Link>
+            <Link
               to="/dashboard"
               className="block rounded-2xl px-4 py-3 text-sm font-semibold text-[color:var(--text)] hover:bg-white/5"
             >
               Dashboard
+            </Link>
+            <Link
+              to="/links"
+              className="block rounded-2xl px-4 py-3 text-sm font-semibold text-[color:var(--text)] hover:bg-white/5"
+            >
+              Links
+            </Link>
+            <Link
+              to="/activity"
+              className="block rounded-2xl px-4 py-3 text-sm font-semibold text-[color:var(--text)] hover:bg-white/5"
+            >
+              Activity
             </Link>
             {isAuthenticated ? (
               <button

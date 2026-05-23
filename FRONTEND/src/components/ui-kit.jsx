@@ -11,15 +11,15 @@ export const Button = React.forwardRef(
     };
 
     const sizes = {
-      sm: "px-3 py-2 text-sm",
-      md: "px-4 py-3 text-sm",
-      lg: "px-5 py-3.5 text-base",
+      sm: "min-h-11 px-3.5 py-2.5 text-sm",
+      md: "min-h-11 px-4 py-3 text-sm",
+      lg: "min-h-12 px-5 py-3.5 text-base",
     };
 
     return (
       <button
         ref={ref}
-        className={`inline-flex items-center justify-center gap-2 rounded-2xl font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-2)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:pointer-events-none disabled:opacity-60 ${variants[variant]} ${sizes[size]} ${className}`}
+        className={`inline-flex select-none items-center justify-center gap-2 rounded-2xl font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-2)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:pointer-events-none disabled:opacity-60 active:scale-[0.99] ${variants[variant]} ${sizes[size]} ${className}`}
         {...props}
       />
     );
@@ -30,7 +30,7 @@ Button.displayName = "Button";
 
 export const Card = ({ className = "", padded = true, ...props }) => (
   <div
-    className={`premium-card ${padded ? "p-5 sm:p-6" : ""} ${className}`}
+    className={`premium-card ${padded ? "p-4 sm:p-6" : ""} ${className}`}
     {...props}
   />
 );
@@ -121,19 +121,22 @@ export const SkeletonCard = () => (
 
 export const SkeletonTable = () => (
   <Card className="overflow-hidden p-0">
-    <div className="border-b border-white/10 px-5 py-4">
+    <div className="border-b border-white/10 px-4 py-4 sm:px-5">
       <div className="h-4 w-40 rounded-full skeleton-block" />
     </div>
-    <div className="space-y-3 p-5">
+    <div className="space-y-3 p-4 sm:p-5">
       {Array.from({ length: 4 }).map((_, index) => (
         <div
           key={index}
-          className="grid gap-3 rounded-2xl border border-white/5 p-4 md:grid-cols-[2fr_1.2fr_0.5fr_0.8fr]"
+          className="space-y-3 rounded-3xl border border-white/5 p-4"
         >
-          <div className="h-4 rounded-full skeleton-block" />
-          <div className="h-4 rounded-full skeleton-block" />
-          <div className="h-4 rounded-full skeleton-block" />
-          <div className="h-9 rounded-full skeleton-block" />
+          <div className="h-4 w-3/4 rounded-full skeleton-block" />
+          <div className="h-3 w-1/2 rounded-full skeleton-block" />
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="h-9 rounded-full skeleton-block" />
+            <div className="h-9 rounded-full skeleton-block" />
+            <div className="h-9 rounded-full skeleton-block" />
+          </div>
         </div>
       ))}
     </div>
@@ -243,7 +246,7 @@ export const ToastViewport = () => {
   const { toasts, removeToast } = useAppUI();
 
   return (
-    <div className="pointer-events-none fixed right-4 top-4 z-[60] flex w-[calc(100vw-2rem)] max-w-sm flex-col gap-3 sm:right-6 sm:top-6">
+    <div className="pointer-events-none fixed bottom-4 left-4 right-4 z-[60] flex max-h-[calc(100vh-6rem)] flex-col gap-3 sm:bottom-auto sm:left-auto sm:right-6 sm:top-6 sm:w-[calc(100vw-2rem)] sm:max-w-sm">
       {toasts.map((toast) => (
         <div
           key={toast.id}

@@ -4,14 +4,14 @@ import { ToastViewport } from "./components/ui-kit.jsx";
 
 const RootLayout = () => {
   return (
-    <div className="relative flex min-h-screen flex-col overflow-hidden text-[color:var(--text)]">
+    <div className="relative flex min-h-[100svh] flex-col overflow-hidden text-[color:var(--text)]">
       <div className="pointer-events-none absolute inset-0 subtle-grid opacity-50" />
       <Navbar />
-      <main className="relative z-10 flex-1 pb-16 pt-6 sm:pt-8">
+      <main className="relative z-10 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] pt-5 sm:pt-8">
         <Outlet />
       </main>
       <footer className="relative z-10 border-t border-white/10 bg-[color:var(--bg-elevated)]">
-        <div className="page-shell flex flex-col gap-4 py-8 text-sm text-[color:var(--muted)] sm:flex-row sm:items-center sm:justify-between">
+        <div className="page-shell flex flex-col gap-4 py-6 text-sm text-[color:var(--muted)] sm:flex-row sm:items-center sm:justify-between sm:py-8">
           <div>
             <p className="font-semibold text-[color:var(--text)]">
               url_shortner

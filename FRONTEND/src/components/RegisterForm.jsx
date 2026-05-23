@@ -87,6 +87,8 @@ const RegisterForm = ({ state }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            autoComplete="name"
+            enterKeyHint="next"
           />
         </div>
 
@@ -104,6 +106,9 @@ const RegisterForm = ({ state }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="email"
+            inputMode="email"
+            enterKeyHint="next"
           />
         </div>
 
@@ -122,6 +127,8 @@ const RegisterForm = ({ state }) => {
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
+            autoComplete="new-password"
+            enterKeyHint="go"
           />
           <ProgressBar label="Password strength" value={passwordStrength} />
         </div>

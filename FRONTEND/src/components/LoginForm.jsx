@@ -80,6 +80,9 @@ const LoginForm = ({ state }) => {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             required
+            autoComplete="email"
+            inputMode="email"
+            enterKeyHint="next"
           />
         </div>
 
@@ -97,6 +100,8 @@ const LoginForm = ({ state }) => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             required
+            autoComplete="current-password"
+            enterKeyHint="go"
           />
         </div>
 

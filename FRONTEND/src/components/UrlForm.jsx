@@ -101,6 +101,9 @@ const UrlForm = ({ embedded = false }) => {
           onChange={(event) => setUrl(event.target.value)}
           placeholder="https://example.com"
           required
+          autoComplete="url"
+          inputMode="url"
+          enterKeyHint="go"
         />
         <p className="text-sm text-[color:var(--muted)]">{helperText}</p>
       </div>
@@ -119,6 +122,8 @@ const UrlForm = ({ embedded = false }) => {
             value={customSlug}
             onChange={(event) => setCustomSlug(event.target.value)}
             placeholder="launch-campaign"
+            autoComplete="off"
+            enterKeyHint="go"
           />
         </div>
       ) : (
@@ -148,7 +153,7 @@ const UrlForm = ({ embedded = false }) => {
       ) : null}
 
       {shortUrl ? (
-        <div className="space-y-3 rounded-3xl border border-emerald-400/20 bg-emerald-500/10 p-4">
+        <div className="space-y-3 rounded-3xl border border-emerald-400/20 bg-emerald-500/10 p-4 sm:p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-sm font-semibold text-emerald-100">
@@ -172,7 +177,7 @@ const UrlForm = ({ embedded = false }) => {
               variant={copied ? "secondary" : "primary"}
               size="md"
               onClick={handleCopy}
-              className="sm:w-28"
+              className="w-full sm:w-28"
             >
               {copied ? "Copied" : "Copy"}
             </Button>
