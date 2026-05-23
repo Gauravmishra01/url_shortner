@@ -1,0 +1,33 @@
+{
+  "name": "linkforge-backend",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "Gauravmishra01",
+  "license": "ISC",
+  "description": "url_shortner - backend",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gauravmishra01/url_shortner"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.0",
+    "nanoid": "^5.1.5",
+    "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "supertest": "^6.3.3"
+  }
+}
