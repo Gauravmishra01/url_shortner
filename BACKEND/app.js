@@ -18,6 +18,58 @@ dotenv.config({ path: "./.env" });
 
 const app = express();
 
+const isPrivateNetworkHostname = (hostname) => {
+  if (!hostname) return false;
+
+  const normalizedHostname = hostname.toLowerCase();
+  if (
+    normalizedHostname === "localhost" ||
+    normalizedHostname === "127.0.0.1" ||
+    normalizedHostname === "::1"
+  ) {
+    return true;
+  }
+
+  if (normalizedHostname.endsWith(".local")) {
+    return true;
+  }
+
+  const ipv4Parts = normalizedHostname.split(".").map((part) => Number(part));
+  if (ipv4Parts.length !== 4 || ipv4Parts.some(Number.isNaN)) {
+    return false;
+  }
+
+  const [firstOctet, secondOctet] = ipv4Parts;
+  if (firstOctet === 10) return true;
+  if (firstOctet === 192 && secondOctet === 168) return true;
+  if (firstOctet === 172 && secondOctet >= 16 && secondOctet <= 31) return true;
+
+  return false;
+};
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+
+  if (allowedOrigins.includes(origin)) {
+    return true;
+  }
+
+  try {
+    const hostname = new URL(origin).hostname;
+    if (isPrivateNetworkHostname(hostname)) {
+      return true;
+    }
+
+    if (hostname.endsWith(".vercel.app")) {
+      return true;
+    }
+  } catch (error) {
+    return false;
+  }
+
+  return false;
+};
+
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   "http://localhost:5173",
@@ -27,27 +79,9 @@ const allowedOrigins = [
 app.use(
   cors({
     origin(origin, callback) {
-      // Allow requests with no origin (e.g., server-to-server, curl)
-      if (!origin) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
         return;
-      }
-
-      // Allow configured origins
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-        return;
-      }
-
-      // Allow Vercel preview domains automatically (convenience for deploy previews)
-      try {
-        const hostname = new URL(origin).hostname;
-        if (hostname.endsWith(".vercel.app")) {
-          callback(null, true);
-          return;
-        }
-      } catch (e) {
-        // ignore URL parsing errors
       }
 
       console.warn(`CORS blocked for origin: ${origin}`);

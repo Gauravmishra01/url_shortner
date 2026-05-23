@@ -1,12 +1,36 @@
 import axios from "axios";
+import { getStoredAuthToken } from "./authSession";
 
-export const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:3000";
+const resolveApiBaseUrl = () => {
+  const configuredApiUrl = import.meta.env.VITE_API_URL;
+  if (configuredApiUrl) {
+    return configuredApiUrl.replace(/\/$/, "");
+  }
+
+  if (typeof window === "undefined") {
+    return "http://localhost:3000";
+  }
+
+  const backendPort = import.meta.env.VITE_API_PORT || "3000";
+  return `${window.location.protocol}//${window.location.hostname}:${backendPort}`;
+};
+
+export const API_BASE_URL = resolveApiBaseUrl();
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000, //10s
   withCredentials: true,
+});
+
+axiosInstance.interceptors.request.use((config) => {
+  const token = getStoredAuthToken();
+  if (token) {
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
 });
 
 // Response interceptor

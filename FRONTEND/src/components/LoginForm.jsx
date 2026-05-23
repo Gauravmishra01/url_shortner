@@ -5,6 +5,7 @@ import { login } from "../store/slice/authSlice.js";
 import { useNavigate } from "@tanstack/react-router";
 import { Badge, Button, Card, Input } from "./ui-kit.jsx";
 import { useAppUI } from "../context/AppUIContext.jsx";
+import { setStoredAuthToken } from "../utils/authSession";
 
 const LoginForm = ({ state }) => {
   const [email, setEmail] = useState("");
@@ -23,6 +24,7 @@ const LoginForm = ({ state }) => {
 
     try {
       const data = await loginUser(password, email);
+      setStoredAuthToken(data?.token, { persistent: rememberMe });
       dispatch(login(data.user));
       navigate({ to: "/dashboard" });
       setLoading(false);

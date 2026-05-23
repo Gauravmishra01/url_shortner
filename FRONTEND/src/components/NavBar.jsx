@@ -5,6 +5,7 @@ import { logout as logoutAction } from "../store/slice/authSlice";
 import { logoutUser } from "../api/user.api";
 import { Badge, Button, ThemeToggle } from "./ui-kit.jsx";
 import { useAppUI } from "../context/AppUIContext.jsx";
+import { clearStoredAuthToken } from "../utils/authSession";
 
 const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
@@ -20,10 +21,14 @@ const Navbar = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   const handleLogout = async () => {
-    await logoutUser();
-    dispatch(logoutAction());
-    navigate({ to: "/" });
-    setMenuOpen(false);
+    try {
+      await logoutUser();
+    } finally {
+      clearStoredAuthToken();
+      dispatch(logoutAction());
+      navigate({ to: "/" });
+      setMenuOpen(false);
+    }
   };
 
   const visibleNotifications = useMemo(

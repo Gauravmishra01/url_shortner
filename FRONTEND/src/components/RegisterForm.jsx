@@ -5,6 +5,7 @@ import { login } from "../store/slice/authSlice";
 import { useNavigate } from "@tanstack/react-router";
 import { Badge, Button, Card, Input, ProgressBar } from "./ui-kit.jsx";
 import { useAppUI } from "../context/AppUIContext.jsx";
+import { setStoredAuthToken } from "../utils/authSession";
 
 const RegisterForm = ({ state }) => {
   const [name, setName] = useState("");
@@ -30,6 +31,7 @@ const RegisterForm = ({ state }) => {
     try {
       const data = await registerUser(name, password, email);
       setLoading(false);
+      setStoredAuthToken(data?.token, { persistent: true });
       dispatch(login(data.user));
       navigate({ to: "/dashboard" });
       setLoading(false);
